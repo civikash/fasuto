@@ -1,0 +1,6 @@
+<p>Вы действительно хотите удалить пользователя "{{ user.username }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Да</button>
+  <a href="{% url 'create_user' %}">Нет</a>
+</form>

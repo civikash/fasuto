@@ -1,0 +1,76 @@
+{% extends 'main.html' %}
+
+{% block title %} Диаграммы {% endblock %}
+
+{% block content %}
+        <div class="container">
+            <div class="text-center mt-5">
+                <h1>Диаграммы таблиц</h1>
+                <p class="lead">На данной странице представлены различные диграммы таблиц</p>
+            </div>
+        </div>
+
+        <figure class="highcharts-figure">
+          <div id="chart-container"></div>
+          <p class="highcharts-description">
+            Basic line chart showing trends in a dataset. This chart includes the
+            <code>series-label</code> module, which adds a label to each line for
+            enhanced readability.
+          </p>
+        </figure>
+
+<!-- scripts for charts-->
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/series-label.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        <script type="text/javascript">
+            Highcharts.chart('chart-container', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'График обслуживания и ремонта проекторов'
+                },
+                xAxis: {
+                    categories: [{% for model, data in service_data %}"{{ model }}",{% endfor %}],
+                    title: {
+                        text: 'Модель проектора'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Количество проекторов'
+                    }
+                },
+                tooltip: {
+                    formatter: function() {
+                        var s = '<b>'+ this.x +'</b>';
+        
+                        $.each(this.points, function(i, point) {
+                            s += '<br/>'+ point.series.name +': '+ point.y;
+                            if (point.point.date) {
+                                s += ' (' + point.point.date + ')';
+                            }
+                        });
+        
+                        return s;
+                    },
+                    shared: true
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                series: [{
+                    name: 'Обслуживание',
+                    data: [{% for data in service_data %}{% if data.data %}{% for date in data.data %}{y: 1, date: '{{ date }}'},{% endfor %}{% endif %}{% endfor %}]
+                }, {
+                    name: 'Ремонт',
+                    data: [{% for data in repair_data %}{% if data.data %}{% for date in data.data %}{y: 1, date: '{{ date }}'},{% endfor %}{% endif %}{% endfor %}]
+                }]
+            });
+        </script>
+{% endblock %}

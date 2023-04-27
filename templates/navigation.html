@@ -1,0 +1,42 @@
+{% block content %}
+{% load static %}
+<nav>
+    
+    <ul>
+        {% if user_role == 'Работник' %}
+        <li>
+            <a href="{% url 'employee' %}">Главная</a>
+        </li>
+        <li>
+            <a href="{% url 'table' %}">Статистика</a>
+        </li>
+        {% elif user_role == 'Администратор' %}
+        <li>
+            <a href="{% url 'global_panel' %}">Главная</a>
+        </li>
+        <li>
+            <a href="{% url 'table' %}">Статистика</a>
+        </li>
+        <li>
+            <a href="{% url 'create_user' %}">Создать пользователя</a>
+        </li>
+        {% elif user_role == 'Наблюдатель' %}
+        <li>
+            <a href="{% url 'observ_emp' %}">Работники</a>
+        </li>
+        <li>
+            <a href="{% url 'table' %}">Статистика</a>
+        </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li>
+            <a href="{% url 'review' %}">Отзывы</a>
+        </li>
+        <li><a class="logout-button" href="{% url 'logout' %}">Выйти</a></li>
+        {% endif %}
+        <li>
+        </li>
+    </ul>
+</nav>
+
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% include './add_review.html' %}
+<div class="flex mrg-bot-em-2 gap-em-1 pad-1-2">
+<button class="tab-button flex align-center gap-5x" data-tab="tab1">Все отзывы</button>
+<button class="tab-button flex align-center gap-5x" data-tab="tab2">Отрицательные отзывы</button>
+<button class="tab-button flex align-center gap-5x" data-tab="tab3">Отзывы на проверке</button>
+</div>
+<div class="tab-content" data-tab="tab1">
+<div class="flex column pd-21-55 mg-em-1 br-rd-px-13 bckgr-white gap-em-1">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M11.334 8.14575C10.7532 8.14575 10.2715 7.66408 10.2715 7.08325V2.83325C10.2715 2.25242 10.7532 1.77075 11.334 1.77075C11.9148 1.77075 12.3965 2.25242 12.3965 2.83325V7.08325C12.3965 7.66408 11.9148 8.14575 11.334 8.14575Z"
+            fill="#3366FF" />
+        <path
+            d="M22.666 8.14575C22.0852 8.14575 21.6035 7.66408 21.6035 7.08325V2.83325C21.6035 2.25242 22.0852 1.77075 22.666 1.77075C23.2468 1.77075 23.7285 2.25242 23.7285 2.83325V7.08325C23.7285 7.66408 23.2468 8.14575 22.666 8.14575Z"
+            fill="#3366FF" />
+        <path opacity="0.4"
+            d="M29.75 12.0416V24.0833C29.75 28.3333 27.625 31.1666 22.6667 31.1666H11.3333C6.375 31.1666 4.25 28.3333 4.25 24.0833V12.0416C4.25 7.79159 6.375 4.95825 11.3333 4.95825H22.6667C27.625 4.95825 29.75 7.79159 29.75 12.0416Z"
+            fill="#3366FF" />
+        <path
+            d="M22.6673 16.6458H11.334C10.7532 16.6458 10.2715 16.1641 10.2715 15.5833C10.2715 15.0024 10.7532 14.5208 11.334 14.5208H22.6673C23.2482 14.5208 23.7298 15.0024 23.7298 15.5833C23.7298 16.1641 23.2482 16.6458 22.6673 16.6458Z"
+            fill="#3366FF" />
+        <path
+            d="M17.0007 23.7292H11.334C10.7532 23.7292 10.2715 23.2476 10.2715 22.6667C10.2715 22.0859 10.7532 21.6042 11.334 21.6042H17.0007C17.5815 21.6042 18.0632 22.0859 18.0632 22.6667C18.0632 23.2476 17.5815 23.7292 17.0007 23.7292Z"
+            fill="#3366FF" />
+    </svg>
+    <div class="flex align-center">
+        {% if user_role == 'Работник' %}
+        <h1>Ваши отзывы</h1>
+        {% elif user_role == 'Администратор' %}
+        <h1>Таблица отзывов</h1>
+        {% elif user_role == 'Наблюдатель' %}
+        <h1>Таблица отзывов</h1>
+        {% endif %}
+    </div>
+    {% if user_role == 'Администратор' %}
+    <form method="POST" action="{% url 'check_service' %}">
+        {% csrf_token %}
+        <div class="course-search flex jst-start align-center flex-1">
+            <div class="filter left-0 flex relative align-center">
+                <div class="search pos-rel flex column">
+                    <label for="search" class="search-label">Запуск проверки</label>
+                    <select class="hgt-100" id="searchGroup" name="select_space">
+                        {% for space in spaces %}
+                        <option value="{{ space.id }}">{{ space.name }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Проверить</button>
+
+        </div>
+      </form>
+      <form method="POST" action="{% url 'check_all_service' %}">
+        {% csrf_token %}
+            <button type="submit">Глобальная проверка</button>
+      </form>
+      <form method="POST" action="{% url 'check_solo_parce' %}">
+        {% csrf_token %}
+            <button type="submit">Обновление базы отзывов</button>
+      </form>
+
+      
+    {% endif %}
+    {% if user_role == 'Администратор' or user_role == 'Наблюдатель' %}
+    <form method="GET" class="flex wid-100 between" action="{% url 'review' %}">
+        <div class="counter-space flex wid-100 jst-start">
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex relative align-center">
+                    <div class="search pos-rel flex column">
+                        <label for="search" class="search-label">Сотрудник</label>
+                        <select class="hgt-100" id="searchGroup" name="owner_name">
+                            <option value="">Все</option>
+                            {% for user in users %}
+                            <option value="{{ user.username }}" {% if request.GET.owner_name == user.username %}selected{% endif %}>{{ user.username }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex relative align-center">
+                    <div class="search pos-rel flex column">
+                        <label for="search" class="search-label">Дата</label>
+                        <input type="date" class="hgt-100" name="created_date" value="{{ request.GET.created_date|date:'Y-m-D' }}">
+                    </div>
+                </div>
+            </div>
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex pos-rel align-center">
+                    <div class="search relative flex column">
+                        <label for="search" class="search-label">Площадка</label>
+                        <select class="hgt-100" name="space_name">
+                            <option value="">Все</option>
+                            {% for space in spaces %}
+                            <option value="{{ space.name }}" {% if request.GET.space_name == space.name %}selected{% endif %}>{{ space.name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex relative align-center">
+                    <div class="search relative flex column">
+                        <label for="search" class="search-label">Отделение</label>
+                        <input class="wid-px-700 hgt-100" name="office_name" type="text" id="searchOrg" placeholder="Отделение">
+                    </div>
+                </div>
+            </div>
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex relative align-center">
+                    <div class="search relative flex column">
+                        <label for="search" class="search-label">Состояние</label>
+                        <select class="hgt-100" id="selectCourse" name="status_name">
+                            <option value="">Все</option>
+                            {% for status in status_type %}
+                            <option value="{{ status.name }}" {% if request.GET.status_name == status.name %}selected{% endif %}>{{ status.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="course-search flex jst-start align-center flex-1">
+                <div class="filter left-0 flex relative align-center">
+                    <div class="search relative flex column">
+                        <label for="search" class="search-label">Тип отзыва</label>
+                        <select class="hgt-100" id="selectCourse" name="type_review_name">
+                            <option value="">Все</option>
+                            {% for review in reviews_type %}
+                            <option value="{{ review.name }}" {% if request.GET.type_review_name == review.name %}selected{% endif %}>{{ review.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="filter">Принять</button>
+        </div>
+    </form>
+    <table cellpadding="0" cellspacing="0" class="wid-100" id="reviewBody">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Сотрудник</th>
+                <th>Дата</th>
+                <th>Тип</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Площадка</th>
+                <th>Отделение</th>
+                <th>Состояние</th>
+                <th>Тип</th>
+                {% if not user_role == 'Наблюдатель' %}
+                <th>Редактировать</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in object_list %}
+            <tr>
+                <td>{{ review.id }}</td>
+                <td>{{ review.owner }}</td>
+                <td>{{ review.create_date }}</td>
+                <td>{{ review.type_stuff.name }}</td>
+                <td>{{ review.re_login }}</td>
+                <td>{{ review.re_password }}</td>
+                <td>{{ review.re_firstname }}</td>
+                <td>{{ review.re_lastname }}</td>
+                <td>{{ review.space.name }}</td>
+                <td>{{ review.office }}</td>
+                <td>{{ review.status.name }}</td>
+                <td>{{ review.type_review.name }}</td>
+                {% if not user_role == 'Наблюдатель' %}
+                <td><a href="{% url 'edit_review' pk=review.id %}">Редактировать</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <table cellpadding="0" cellspacing="0" class="wid-100" id="reviewBody">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Дата</th>
+                <th>Тип</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Площадка</th>
+                <th>Отделение</th>
+                <th>Состояние</th>
+                <th>Тип</th>
+                <th>Редактировать</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if not user_role == 'Наблюдатель' %}
+            <tr>
+                <td colspan="12"><button id="addReview"
+                        class="add wid-100 clr-blue bckgr-trans br-px-1-blue align-center jst-center gap-em-1"><svg
+                            class="svg-add" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.4"
+                                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                            <path
+                                d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" />
+                        </svg>
+                        Добавить отзыв</button></td>
+            </tr>
+            {% endif %}
+            {% for review in myreview %}
+            <tr>
+                <td>{{ review.id }}</td>
+                <td>{{ review.create_date }}</td>
+                <td>{{ review.type_stuff.name }}</td>
+                <td>{{ review.re_login }}</td>
+                <td>{{ review.re_password }}</td>
+                <td>{{ review.re_firstname }}</td>
+                <td>{{ review.re_lastname }}</td>
+                <td>{{ review.space.name }}</td>
+                <td>{{ review.office }}</td>
+                <td>{{ review.status.name }}</td>
+                <td>{{ review.type_review.name }}</td>
+                <td><a href="{% url 'edit_review' pk=review.id %}">Редактировать</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+</div>
+<div class="tab-content" data-tab="tab2">
+    {% include './review_negative.html' %}
+</div>
+<div class="tab-content" data-tab="tab3">
+    {% include './review_check.html' %}
+</div>
+{% endblock %}

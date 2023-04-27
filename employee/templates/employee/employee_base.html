@@ -1,0 +1,83 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<h2>Рабочее пространство работника</h2>
+<!-- Обычный вывод данных авторизированного пользователя -->
+<div class="user-info">
+  <p>Логин: <span>{{ request.user.username }}</span></p>
+  <p>Имя: <span>{{ request.user.first_name }}</span></p>
+  <p>Фамилия: <span>{{ request.user.last_name }}</span></p>
+  <p>Роль: <span>{{ request.user.role.name }}</span></p>
+</div>
+<div class="pad-1-2">
+<h1>Напоминания</h1>
+<p>Добавьте напоминание, оно будет отображаться здесь</p>
+<form method="POST">
+  {% csrf_token %}
+  <div class="course-search flex wid-100  jst-start align-center">   
+    <div class="filter wid-100  left-0 flex relative align-center">
+        <div class="wid-100 pos-rel flex column">
+            <label for="search" class="search-label little-lb">Дата напоминания</label>
+            <input required class="fieldset wid-100" name="date_task"
+                type="date" />
+        </div>
+    </div>
+</div>
+  <div class="course-search flex wid-100  jst-start align-center">   
+    <div class="filter wid-100  left-0 flex relative align-center">
+        <div class="wid-100 pos-rel flex column">
+            <label for="search" class="search-label little-lb">Текст напоминания</label>
+            <textarea required class="fieldset wid-100 h-100x" name="text_task"
+                type="text" /></textarea>
+        </div>
+    </div>
+</div>
+<button type="submit">Создать</button>
+</form>
+
+
+<h1>Ваши Напоминания</h1>
+{% if global_task %}
+<h1>Глоабальные Напоминания</h1>
+<p>Список напоминаний от Администратора</p>
+{% for global_task in global_task %}
+<div class="user-info">
+  <h2>Создатель: Администратор</h2>
+  <p>Дата: <span>{{ global_task.start_date }}</span></p>
+  <p>Текст: <span>{{ global_task.text }}</span></p>
+</div>
+{% endfor %}
+{% endif %}
+<p>Список созданных Вами напоминаний</p>
+{% for task in task_list %}
+<div class="user-info">
+  <p>Дата: <span>{{ task.start_date }}</span></p>
+  <p>Текст: <span>{{ task.text }}</span></p>
+</div>
+{% endfor %}
+<div class="flex gap-em-1 column">
+  <h1>Отзывы</h1>
+  <div class="flex column object gap-em-1">
+    <h2>Всего отзывов в системе</h2>
+    <h1>{{ reviews }} отзывов</h1>
+    <table class="wid-100">
+      <thead>
+        <tr>
+          <th>Пользователь</th>
+          <th>Отзывов</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user_count in reviews_count %}
+          <tr>
+            <td>{{ user_count.owner__username }}</td>
+            <td>{{ user_count.count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+{% endblock %}

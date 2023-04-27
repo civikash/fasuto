@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="flex column pd-21-55 mg-em-1 br-rd-px-13 bckgr-white gap-em-1">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path opacity="0.4" d="M17.0007 2.83325C13.289 2.83325 10.2715 5.85075 10.2715 9.56242C10.2715 13.2033 13.119 16.1499 16.8307 16.2773C16.944 16.2633 17.0573 16.2633 17.1423 16.2773C17.1707 16.2773 17.1847 16.2773 17.2131 16.2773C17.2273 16.2773 17.2273 16.2773 17.2416 16.2773C20.8682 16.1499 23.7157 13.2033 23.7297 9.56242C23.7297 5.85075 20.7123 2.83325 17.0007 2.83325Z" fill="#3366FF"/>
+        <path d="M24.1973 20.0451C20.2449 17.4101 13.799 17.4101 9.81818 20.0451C8.01901 21.2492 7.02734 22.8784 7.02734 24.6208C7.02734 26.3634 8.01901 27.9784 9.80401 29.1684C11.7873 30.5001 14.394 31.1659 17.0006 31.1659C19.6073 31.1659 22.2139 30.5001 24.1973 29.1684C25.9823 27.9642 26.9739 26.3492 26.9739 24.5925C26.9599 22.8501 25.9823 21.2351 24.1973 20.0451Z" fill="#3366FF"/>
+        </svg>
+        
+    <div class="flex align-center">
+        <h1>Пользователи</h1>
+    </div>
+<form method="POST">
+    {% csrf_token %}
+    <div class="flex wid-100 gap-em-1">
+    <input required name="username" type="text" placeholder="Логин">
+    <input required name="first_name" type="text" placeholder="Имя">
+    <input required name="last_name" type="text" placeholder="Фамилия">
+    <input required name="password" type="text" placeholder="Пароль от аккаунта">
+    <select name="role">
+        {% for role in roles %}
+         <option value="{{ role.id }}">{{ role.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="pool">
+        {% for pool in pools %}
+         <option value="{{ pool.id }}">{{ pool.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+    <button type="submit">Создать</button>
+</form>
+<h2>Список пользователей</h2>
+<table cellpadding="0" cellspacing="0" data-group="group1" class="wid-100">
+    <thead>
+        <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Логин</th>
+        <th>Роль</th>
+        <th>Разрешение на отзывы</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.role.name }}</td>
+                <td>{{ user.pool.name }}</td>
+                <td><form method="post" action="{% url 'delete_user' user.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Удалить</button>
+                  </form></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

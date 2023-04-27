@@ -1,0 +1,92 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="flex column pd-21-55 mg-em-1 br-rd-px-13 bckgr-white gap-em-1">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M11.334 8.14575C10.7532 8.14575 10.2715 7.66408 10.2715 7.08325V2.83325C10.2715 2.25242 10.7532 1.77075 11.334 1.77075C11.9148 1.77075 12.3965 2.25242 12.3965 2.83325V7.08325C12.3965 7.66408 11.9148 8.14575 11.334 8.14575Z"
+            fill="#3366FF" />
+        <path
+            d="M22.666 8.14575C22.0852 8.14575 21.6035 7.66408 21.6035 7.08325V2.83325C21.6035 2.25242 22.0852 1.77075 22.666 1.77075C23.2468 1.77075 23.7285 2.25242 23.7285 2.83325V7.08325C23.7285 7.66408 23.2468 8.14575 22.666 8.14575Z"
+            fill="#3366FF" />
+        <path opacity="0.4"
+            d="M29.75 12.0416V24.0833C29.75 28.3333 27.625 31.1666 22.6667 31.1666H11.3333C6.375 31.1666 4.25 28.3333 4.25 24.0833V12.0416C4.25 7.79159 6.375 4.95825 11.3333 4.95825H22.6667C27.625 4.95825 29.75 7.79159 29.75 12.0416Z"
+            fill="#3366FF" />
+        <path
+            d="M22.6673 16.6458H11.334C10.7532 16.6458 10.2715 16.1641 10.2715 15.5833C10.2715 15.0024 10.7532 14.5208 11.334 14.5208H22.6673C23.2482 14.5208 23.7298 15.0024 23.7298 15.5833C23.7298 16.1641 23.2482 16.6458 22.6673 16.6458Z"
+            fill="#3366FF" />
+        <path
+            d="M17.0007 23.7292H11.334C10.7532 23.7292 10.2715 23.2476 10.2715 22.6667C10.2715 22.0859 10.7532 21.6042 11.334 21.6042H17.0007C17.5815 21.6042 18.0632 22.0859 18.0632 22.6667C18.0632 23.2476 17.5815 23.7292 17.0007 23.7292Z"
+            fill="#3366FF" />
+    </svg>
+    <div class="flex column">
+        <h1>Статистика</h1>
+        <div>
+            <canvas id="myChart"></canvas>
+          </div>
+
+          <canvas id="type-reviews-chart"></canvas>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script>
+              var ctx = document.getElementById('type-reviews-chart').getContext('2d');
+              var typeReviewsChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: [{% for type_review in type_reviews %}"{{ type_review.name }}",{% endfor %}],
+                      datasets: [
+                          {
+                              label: 'Положительные',
+                              data: [{% for count in positive_reviews_count %}{{ count }},{% endfor %}],
+                              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                              borderColor: 'rgba(75, 192, 192, 1)',
+                              borderWidth: 1
+                          },
+                          {
+                              label: 'Отрицательные',
+                              data: [{% for count in negative_reviews_count %}{{ count }},{% endfor %}],
+                              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                              borderColor: 'rgba(255, 99, 132, 1)',
+                              borderWidth: 1
+                          }
+                      ]
+                  },
+                  options: {
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              });
+          </script>
+          
+          <script>
+            var chartData = {{ chart_data|safe }};
+    
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Количество отзывов за работниками',
+                        data: chartData.data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
+{% endblock %}

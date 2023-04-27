@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<h2>Рабочее пространство наблюдателя</h2>
+<h2>Здравствуйте, {{ request.user.first_name }} {{ request.user.last_name }}!</h2>
+<!-- Вывод данных пользователей с ролью РАБОТНИКИ -->
+{% for empl in empl %}
+<div class="user-info">
+    <p>Логин: <span>{{ empl.username }}</span></p>
+    <p>Имя: <span>{{ empl.first_name }}</span></p>
+    <p>Фамилия: <span>{{ empl.last_name }}</span></p>
+    <p>Роль: <span>{{ empl.role.name }}</span></p>
+  </div>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% if user_role == 'Администратор' %}
+<div class="flex column pd-21-55 mg-em-1 br-rd-px-13 bckgr-white gap-em-1">
+  <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path opacity="0.4" d="M32.725 9.724C28.798 3.55298 23.052 0 17 0C13.974 0 11.033 0.884 8.347 2.533C5.661 4.199 3.247 6.62998 1.275 9.724C-0.425 12.393 -0.425 16.728 1.275 19.397C5.202 25.585 10.948 29.121 17 29.121C20.026 29.121 22.967 28.237 25.653 26.588C28.339 24.922 30.753 22.491 32.725 19.397C34.425 16.745 34.425 12.393 32.725 9.724ZM17 21.437C13.192 21.437 10.132 18.36 10.132 14.569C10.132 10.778 13.192 7.701 17 7.701C20.808 7.701 23.868 10.778 23.868 14.569C23.868 18.36 20.808 21.437 17 21.437Z" fill="#3366FF"/>
+    <path d="M17.0013 9.70703C14.3323 9.70703 12.1562 11.883 12.1562 14.569C12.1562 17.238 14.3323 19.414 17.0013 19.414C19.6703 19.414 21.8633 17.238 21.8633 14.569C21.8633 11.9 19.6703 9.70703 17.0013 9.70703Z" fill="#3366FF"/>
+    </svg>
+
+  <h1>Напоминания</h1>
+  <p>Добавьте напоминание, оно будет отображаться здесь</p>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="course-search flex wid-100  jst-start align-center">   
+      <div class="filter wid-100  left-0 flex relative align-center">
+          <div class=" flex column">
+              <label for="search" class="search-label little-lb">Напоминание Всем</label>
+              <label>Поставьте галочку, если вы хотите сделать глобальное напоминание</label>
+              <input required name="global_task" class="h-25x"
+                  type="checkbox" />
+          </div>
+      </div>
+  </div>
+    <div class="course-search flex wid-100  jst-start align-center">   
+      <div class="filter wid-100  left-0 flex relative align-center">
+          <div class="wid-100 pos-rel flex column">
+              <label for="search" class="search-label little-lb">Дата напоминания</label>
+              <input required class="fieldset wid-100" name="date_task"
+                  type="date" />
+          </div>
+      </div>
+  </div>
+    <div class="course-search flex wid-100  jst-start align-center">   
+      <div class="filter wid-100  left-0 flex relative align-center">
+          <div class="wid-100 pos-rel flex column">
+              <label for="search" class="search-label little-lb">Текст напоминания</label>
+              <textarea required class="fieldset wid-100 h-100x" name="text_task"
+                  type="text" /></textarea>
+          </div>
+      </div>
+  </div>
+  <button type="submit">Создать</button>
+  </form>
+  
+  
+  <h1>Ваши Напоминания</h1>
+  {% if task.global_task == True %}
+  <h1>Глоабальные Напоминания</h1>
+  <p>Список напоминаний от Администратора</p>
+  {% for global_task in global_task %}
+  <div class="user-info">
+    <h1>Создатель: Администратор</h1>
+    <p>Дата: <span>{{ global_task.start_date }}</span></p>
+    <p>Текст: <span>{{ global_task.text }}</span></p>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <p>Список созданных Вами напоминаний</p>
+  {% for task in task_list %}
+  <div class="user-info">
+    <p>Дата: <span>{{ task.start_date }}</span></p>
+    <p>Текст: <span>{{ task.text }}</span></p>
+  </div>
+  {% endfor %}
+  <div class="flex gap-em-1 column">
+    <h1>Отзывы</h1>
+    <div class="flex column object gap-em-1">
+      <h2>Всего отзывов в системе</h2>
+      <h1>{{ reviews }} отзывов</h1>
+      <table class="wid-100">
+        <thead>
+          <tr>
+            <th>Пользователь</th>
+            <th>Отзывов</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user_count in reviews_count %}
+            <tr>
+              <td>{{ user_count.owner__username }}</td>
+              <td>{{ user_count.count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+{% endif %}
+{% endblock %}
