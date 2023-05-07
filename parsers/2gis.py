@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import WebDriverException
 from datetime import datetime
+from selenium.webdriver.chrome.service import Service
 from mysql.connector import connect, Error
 
 
@@ -12,10 +13,11 @@ def get_data_from_database(db_info, db_all_info, hrefs):
     try:
         print("Начато соединение")
         with connect(
+            user="fasuto",
+            password="123qweASD",
             host="localhost",
-            user="root",
-            password="root",
-            database="Mydatabase",
+            port=3306,
+            database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
                 select_movies_query = "SELECT id, re_firstname, re_lastname, office, review_text FROM adminc_reviewsemployee WHERE status_id = '1' AND space_id = '1'"
@@ -41,10 +43,11 @@ def get_data_from_database(db_info, db_all_info, hrefs):
 def update_data_from_database(db_all_info, db_info, all_information, count):
     try:
         with connect(
+            user="fasuto",
+            password="123qweASD",
             host="localhost",
-            user="root",
-            password="root",
-            database="Mydatabase",
+            port=3306,
+            database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
                 count = 0
@@ -158,20 +161,18 @@ def main():
     count = 0
 
     options = webdriver.ChromeOptions()
-    options.headless = True
-    get_data_from_database(db_info, db_all_info, hrefs)
-
-    for i in hrefs:
-        # print("проверка i", i)
-        browser = webdriver.Chrome(executable_path="parsers/chromedriver", options = options) 
-        browser.maximize_window()
-        browser.get(i)
-        browser.implicitly_wait(30)
-        # print("работает вроде")
+    options.add_argument("--no-sandbox")
+    options.add_argument('--headless')
+    service = Service("/usr/bin/chromedriver")
+    driver = webdriver.Chrome(service=service, options=options)
     
-        get_info(browser, all_information)
-
-        update_data_from_database(db_all_info, db_info, all_information, count)
-    # print("я закончил")
+    try:
+        get_data_from_database(db_info, db_all_info, hrefs)
+        for i in hrefs:
+            driver.get(i)
+            all_information = get_info(driver, all_information)
+        all_information = update_data_from_database(db_all_info, db_info, all_information, count) 
+    finally:
+        driver.quit()
 
 main()

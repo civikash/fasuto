@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 from selenium import webdriver
 from datetime import datetime
+from selenium.webdriver.chrome.service import Service
 
 def get_date(date, date_formatted):
     months = {
@@ -96,7 +97,10 @@ def main():
     all_info = []
 
     options = webdriver.ChromeOptions()
-    options.headless = True
+    options.add_argument("--no-sandbox")
+    options.add_argument('--headless')
+    service = Service("/usr/bin/chromedriver")
+    driver = webdriver.Chrome(service=service, options=options)
     browser = undetected_chromedriver.Chrome(options)
     browser.get("https://barnaul.flamp.ru/firm/yurist_dlya_lyudejj_ooo-70000001059119138")
     browser.implicitly_wait(30)
