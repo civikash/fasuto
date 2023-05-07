@@ -25,7 +25,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
                 result = cursor.fetchall()
                 for row in result:
                     id = row[0]
-                    name = row[1] + " " + row[2]
+                    name = row[1] + " " + (row[2])
                     href = row[3]
                     review = row[4]
                     info = [id, name, review, href]
@@ -50,36 +50,52 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
             database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
+                count = 0
                 for i in all_information:
+                    print("ЭТО ЭТОэто i", i)
                     if i in db_info:
-                        d = db_all_info[db_info.index(i)]
+                        print("Ура!!!")
+                        d = (db_all_info[count])
+                        #print(d)
+                        count += 1
                         f = str(d[0])
-                        update_query = f"UPDATE adminc_reviewsemployee SET status_id = '2' WHERE id = '{f}'"
+                        update_query = (f"""
+                        UPDATE
+                            adminc_reviewsemployee
+                        SET
+                            status_id = '2'
+                        WHERE
+                            id = '{f}'
+                        """)
                         print("Запись о " + f + " id была успешно добавлена")
-                        cursor.execute(update_query)
-                        connection.commit()
+                        with connection.cursor() as cursor:
+                            cursor.execute(update_query)
+                            connection.commit()
+                    else:
+                        pass
     except Error as e:
         print(e)
     return all_information
 
 def get_date(date, date_formatted):
     months = {
-        'января': 1,
-        'февраля': 2,
-        'марта': 3,
-        'апреля': 4,
-        'мая': 5,
-        'июня': 6,
-        'июля': 7,
-        'августа': 8,
-        'сентября': 9,
-        'октября': 10,
-        'ноября': 11,
-        'декабря': 12,
+    'января': 1,
+    'февраля': 2,
+    'марта': 3,
+    'апреля': 4,
+    'мая': 5,
+    'июня': 6,
+    'июля': 7,
+    'августа': 8,
+    'сентября': 9,
+    'октября': 10,
+    'ноября': 11,
+    'декабря': 12,
     }
 
     if "," in date:
-        date = date.split(",")[0]
+        print("Запятая есть")
+        date = (date.split(","))[0]
     day, month_str, year = date.split()
     month = months[month_str]
     date_obj = datetime.strptime(f'{day} {month} {year}', '%d %m %Y')
