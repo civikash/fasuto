@@ -130,7 +130,7 @@ def get_info(browser, all_information):
                 # rating, get_date(date, date_formatted)
                 all_information.append(all_data)
                 print('ALL_DATA ВМЕСТЕ С ALL_INFORMATION PRINT: ', all_information)
-        print("all_information", all_information)  # добавить эту строку для проверки
+        print("ALL_INFORMATION PRINT FINAL CHECK: ", all_information)  # добавить эту строку для проверки
         return all_information
     except:
         print("жорпка")
