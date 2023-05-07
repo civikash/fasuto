@@ -18,7 +18,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
             database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
-                select_movies_query = "SELECT id, re_firstname, re_lastname, office, review_text FROM adminc_reviewsemployee WHERE status_id = '1' AND space_id = '2'"
+                select_movies_query = "SELECT id, re_firstname, re_lastname, office, review_text FROM adminc_reviewsemployee WHERE status_id = '1' AND space_id = '3'"
                 cursor.execute(select_movies_query)
                 result = cursor.fetchall()
                 for row in result:
