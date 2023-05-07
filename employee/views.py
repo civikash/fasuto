@@ -36,7 +36,7 @@ class CheckServiceView(View):
                 os.system('python ./parsers/zoon.py')
         except Exception as e:
             traceback.print_exc()
-            # дополнительно можно записать traceback в лог-файл
+            traceback.print_exc(file=open('/var/log/gunicorn/error.log', 'a'))
         return redirect('review')
     
 class CheckAllServiceView(View):
