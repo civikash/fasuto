@@ -27,7 +27,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
                     name = row[1] + " " + (row[2])
                     href = row[3]
                     review = row[4]
-                    print(row)
+                    #print(row)
                     info = [id, name, review, href]
                     rev_info = [name, review]
                     
@@ -133,9 +133,10 @@ def get_info(browser, all_information):
                 all_information.append(all_data)
                 print('ALL_DATA ВМЕСТЕ С ALL_INFORMATION PRINT: ', all_information)
         print("ALL_INFORMATION PRINT FINAL CHECK: ", all_information)  # добавить эту строку для проверки
-        return all_information
     except:
+        pass
         print("жорпка")
+    return all_information
 
     
 
