@@ -110,47 +110,67 @@ def get_info(browser, all_information):
 
         organisation_name = browser.find_element(By.CLASS_NAME, "_tvxwjf")
         reviews_number = browser.find_element(By.CLASS_NAME, "_1xhlznaa").text
-        print(reviews_number)
+        if int(reviews_number) < 12:
+            zagl2 = BeautifulSoup(browser.page_source, 'lxml')
+            all_names = zagl2.find_all("div", class_="_11gvyqv")
 
-        while True:
-            # Проматываем страницу вниз
-            browser.execute_script("arguments[0].scrollIntoView();", organisation_name)
+            for f in all_names:
+                name = f.find("span", class_="_16s5yj36").getText() # имя
 
-            try:
-                upload_button = browser.find_element(By.CLASS_NAME, "_1iczexgz")
-            except Exception as e:
-                continue  # Не нашли элемент, попробуем на следующей итерации
+                review_text = f.find("a", class_="_ayej9u3")
+                if review_text is None:
+                    review_text = f.find("a", class_="_1it5ivp")
+                review = review_text.getText() # текст отзыва
 
-            actions = ActionChains(browser)
-            actions.move_to_element(upload_button).perform()
+                rating = len(f.find("div", class_="_1fkin5c").find_all("span")) # рейтинг
 
-            try:
-                browser.implicitly_wait(10)
-                upload_button = browser.find_element(By.CLASS_NAME, "_1iczexgz")
-            except WebDriverException:
-                print("Все долистано")
-                zagl2 = BeautifulSoup(browser.page_source, 'lxml')
-                all_names = zagl2.find_all("div", class_="_11gvyqv")
+                date = f.find("div", class_="_4mwq3d").getText() # дата
 
-                for f in all_names:
-                    name = f.find("span", class_="_16s5yj36").getText() # имя
+                all_data = [name, review]
+                all_information.append(all_data)
+                # rating, get_date(date, date_formatted)
+            return all_information
+        else:
 
-                    review_text = f.find("a", class_="_ayej9u3")
-                    if review_text is None:
-                        review_text = f.find("a", class_="_1it5ivp")
-                    review = review_text.getText() # текст отзыва
+            while True:
+                # Проматываем страницу вниз
+                browser.execute_script("arguments[0].scrollIntoView();", organisation_name)
 
-                    rating = len(f.find("div", class_="_1fkin5c").find_all("span")) # рейтинг
+                try:
+                    upload_button = browser.find_element(By.CLASS_NAME, "_1iczexgz")
+                except Exception as e:
+                    continue  # Не нашли элемент, попробуем на следующей итерации
 
-                    date = f.find("div", class_="_4mwq3d").getText() # дата
+                actions = ActionChains(browser)
+                actions.move_to_element(upload_button).perform()
 
-                    all_data = [name, review]
-                    all_information.append(all_data)
-                    # rating, get_date(date, date_formatted)
-                return all_information
+                try:
+                    browser.implicitly_wait(10)
+                    upload_button = browser.find_element(By.CLASS_NAME, "_1iczexgz")
+                except WebDriverException:
+                    print("Все долистано")
+                    zagl2 = BeautifulSoup(browser.page_source, 'lxml')
+                    all_names = zagl2.find_all("div", class_="_11gvyqv")
+
+                    for f in all_names:
+                        name = f.find("span", class_="_16s5yj36").getText() # имя
+
+                        review_text = f.find("a", class_="_ayej9u3")
+                        if review_text is None:
+                            review_text = f.find("a", class_="_1it5ivp")
+                        review = review_text.getText() # текст отзыва
+
+                        rating = len(f.find("div", class_="_1fkin5c").find_all("span")) # рейтинг
+
+                        date = f.find("div", class_="_4mwq3d").getText() # дата
+
+                        all_data = [name, review]
+                        all_information.append(all_data)
+                        # rating, get_date(date, date_formatted)
+                    return all_information
     except:
         # pyautogui.alert(text='ЧТО-ТО ПОШЛО НЕ ТАК ПРИ ПАРСИНГЕ ЯНДЕКСА, СООБЩИТЕ АДМИНИСТРАТОРУ', title='Ошибка', button='Закрыть')
-        exit()        
+        exit()              
 
 
 def main():

@@ -190,6 +190,7 @@ def add_review(request):
                 if review_text.lower() == review.review_text.lower():
                     # Найден точно такой же отзыв
                     status_review = ReviewsEmployee.CHECKING
+                    status_main = ReviewStatus.objects.get(name=ReviewStatus.MODERATION)
                     matched_review = review
                     break
                 else:
@@ -197,11 +198,13 @@ def add_review(request):
                     match_parts = sum([1 for p in create_parts if p in review.review_text])
                     if match_parts >= 3 and match_parts <= 4:
                         status_review  = ReviewsEmployee.CHECKING
+                        status_main = ReviewStatus.objects.get(name=ReviewStatus.MODERATION)
                         matched_review = review
                         break
             if matched_review is not None:
                 # Если найдено совпадение, сохраняем его статус в переменную
                 status_review = ReviewsEmployee.CHECKING
+                status_main = ReviewStatus.objects.get(name=ReviewStatus.MODERATION)
                 review_text = matched_review.review_text
             else:
                 review_text = review_text
@@ -219,7 +222,7 @@ def add_review(request):
                 review_text = review_text,
                 check_review = status_review,
                 type_review = type_review,
-                status=null_review_status
+                status=status_main
             )
 
         record.save()
