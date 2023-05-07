@@ -1,6 +1,7 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from datetime import datetime
+from selenium.webdriver.chrome.service import Service
 from mysql.connector import connect, Error
 
 def get_data_from_database(db_info, db_all_info, hrefs):
@@ -136,10 +137,8 @@ def main():
     options = webdriver.ChromeOptions()
     options.add_argument("--no-sandbox")
     options.add_argument('--headless')
-    service = webdriver.chrome.service.Service("/usr/bin/chromedriver")
+    service = Service("/usr/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
-
-    driver = webdriver.Chrome("/usr/bin/chromedriver", options=options)
     
     try:
         get_data_from_database(db_info, db_all_info, hrefs)
