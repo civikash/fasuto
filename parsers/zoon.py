@@ -135,18 +135,14 @@ def main():
 
     options = webdriver.ChromeOptions()
     options.headless = True
-    get_data_from_database(db_info, db_all_info, hrefs)
-    for i in hrefs:
-        # print("проверка i", i)
-        browser = webdriver.Chrome(executable_path="parsers/chromedriver", options = options) 
-        browser.maximize_window()
-        browser.get(i)
-        browser.implicitly_wait(30)
-        # print("работает вроде")
     
-        get_info(browser, all_information)
-
+    with webdriver.Chrome(options=options) as browser:
+        get_data_from_database(db_info, db_all_info, hrefs)
+        for i in hrefs:
+            # print("проверка i", i)
+            browser.get(i)
+            all_information = get_info(browser, all_information)
         update_data_from_database(db_all_info, db_info, all_information, count)
-    browser.close()
+        browser.close()
     browser.quit()
 main()
