@@ -20,7 +20,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
                 cursor.execute(select_movies_query)
                 result = cursor.fetchall()
                 for row in result:
-                    print(row)
+                    #print(row)
                     id = row[0]
                     name = row[1] + " " + (row[2])
                     href = row[3]
@@ -42,19 +42,20 @@ def get_data_from_database(db_info, db_all_info, hrefs):
 def update_data_from_database(db_all_info, db_info, all_information, count):
     try:
         with connect(
+            user="fasuto",
+            password="123qweASD",
             host="localhost",
-            user="root",
-            password="root",
+            port=3306,
             database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
                 count = 0
                 for i in all_information:
-                    # print("это i", i)
+                    print("это i", i)
                     if i in db_info:
-                        # print("Ура!!!")
+                        print("Ура!!!")
                         d = (db_all_info[count])
-                        # print(d)
+                        print(d)
                         count += 1
                         f = str(d[0])
                         update_query = (f"""
