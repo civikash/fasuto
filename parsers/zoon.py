@@ -4,6 +4,8 @@ from datetime import datetime
 from selenium.webdriver.chrome.service import Service
 from mysql.connector import connect, Error
 
+all_information = []
+
 def get_data_from_database(db_info, db_all_info, hrefs):
     print("Соединение с бд")
     try:
