@@ -43,7 +43,7 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
             host="localhost",
             user="root",
             password="root",
-            database="Mydatabase",
+            database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
                 count = 0
