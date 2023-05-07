@@ -118,6 +118,7 @@ def get_info(browser, all_information):
             else:
                 review_text = f.find("span", class_="js-comment-content").getText() # отзыв
                 review_text = review_text.replace("\xa0", " ")
+                print('REVIE_TEXT', review_text)
 
                 rating = ((f.find("span", class_="stars-rating-text").getText()).split(','))[0] # рейтинг
                 date = f.find("span", class_="z-text--dark-gray").getText() # дата
