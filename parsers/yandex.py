@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime
 import os
-os.environ['DISPLAY'] = ':0.0'
-import pyautogui
 from mysql.connector import connect, Error
 
 
@@ -130,7 +128,6 @@ def get_info(browser, all_information):
             print("все ок")
         return all_information
     except:
-        pyautogui.alert(text='ЧТО-ТО ПОШЛО НЕ ТАК ПРИ ПАРСИНГЕ ЯНДЕКСА, СООБЩИТЕ АДМИНИСТРАТОРУ', title='Ошибка', button='Закрыть')
         exit()
 
 
