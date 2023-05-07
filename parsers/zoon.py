@@ -103,6 +103,7 @@ def get_date(date, date_formatted):
     date_formatted = date_obj.strftime('%d-%m-%y')
     return date_formatted
 
+all_information = []
 
 def get_info(browser, all_information):
     date_formatted = ''
