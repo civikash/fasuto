@@ -75,7 +75,7 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
                         pass
     except Error as e:
         print(e)
-
+    return all_information
 
 def get_date(date, date_formatted):
     months = {
