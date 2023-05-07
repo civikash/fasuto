@@ -9,9 +9,9 @@ def get_data_from_database(db_info, db_all_info, hrefs):
     try:
         print("Начато соединение")
         with connect(
-            host="localhost",
             user="root",
             password="root",
+            host="localhost",
             database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
