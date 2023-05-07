@@ -75,6 +75,7 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
                         pass
     except Error as e:
         print(e)
+    return all_information
 
 
 def get_date(date, date_formatted):
@@ -103,7 +104,6 @@ def get_date(date, date_formatted):
     date_formatted = date_obj.strftime('%d-%m-%y')
     return date_formatted
 
-all_information = []
 
 
 def get_info(browser, all_information):
@@ -153,7 +153,7 @@ def main():
         for i in hrefs:
             driver.get(i)
             all_information = get_info(driver, all_information)
-        update_data_from_database(db_all_info, db_info, all_information, count)
+        all_information = update_data_from_database(db_all_info, db_info, all_information, count) 
     finally:
         driver.quit()
 
