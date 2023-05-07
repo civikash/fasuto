@@ -17,6 +17,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.db.models import Count
 import os
+import traceback
 import datetime
 import json
 
@@ -24,14 +25,18 @@ import json
 class CheckServiceView(View):
     def post(self, request, *args, **kwargs):
         service = request.POST.get('select_space')
-        if service == '1':
-            os.system('python ./parsers/2gis.py')
-        elif service == '2':
-            os.system('python ./parsers/yandex.py')
-        elif service == '3':
-            os.system('python ./parsers/flamp.py')
-        elif service == '4':
-            os.system('python ./parsers/zoon.py')
+        try:
+            if service == '1':
+                os.system('python ./parsers/2gis.py')
+            elif service == '2':
+                os.system('python ./parsers/yandex.py')
+            elif service == '3':
+                os.system('python ./parsers/flamp.py')
+            elif service == '4':
+                os.system('python ./parsers/zoon.py')
+        except Exception as e:
+            traceback.print_exc()
+            # дополнительно можно записать traceback в лог-файл
         return redirect('review')
     
 class CheckAllServiceView(View):
