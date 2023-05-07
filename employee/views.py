@@ -36,8 +36,10 @@ class CheckServiceView(View):
                 os.system('python ./parsers/zoon.py')
         except Exception as e:
             traceback.print_exc()
-            traceback.print_exc(file=open('/var/log/gunicorn/error.log', 'a'))
-            traceback.print_exc(file=open('/var/log/gunicorn/tracerback.log', 'a'))
+            with open('/var/log/gunicorn/error.log', 'a') as f:
+                traceback.print_exc(file=f)
+            with open('/var/log/gunicorn/tracerback.log', 'a') as f:
+                traceback.print_exc(file=f)
         return redirect('review')
     
 class CheckAllServiceView(View):
