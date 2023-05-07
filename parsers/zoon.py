@@ -134,17 +134,18 @@ def main():
     count = 0
 
     options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome("/usr/bin/chromedriver")
     options.add_argument("--no-sandbox")
     options.headless = True
+
+    driver = webdriver.Chrome("/usr/bin/chromedriver", options=options)
     
-    with webdriver.Chrome(options=options) as browser:
+    try:
         get_data_from_database(db_info, db_all_info, hrefs)
         for i in hrefs:
-            # print("проверка i", i)
-            browser.get(i)
-            all_information = get_info(browser, all_information)
+            driver.get(i)
+            all_information = get_info(driver, all_information)
         update_data_from_database(db_all_info, db_info, all_information, count)
-        browser.close()
-    browser.quit()
+    finally:
+        driver.quit()
+
 main()
