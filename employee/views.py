@@ -37,6 +37,7 @@ class CheckServiceView(View):
         except Exception as e:
             traceback.print_exc()
             traceback.print_exc(file=open('/var/log/gunicorn/error.log', 'a'))
+            traceback.print_exc(file=open('/var/log/gunicorn/tracerback.log', 'a'))
         return redirect('review')
     
 class CheckAllServiceView(View):
