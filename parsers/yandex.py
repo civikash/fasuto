@@ -2,6 +2,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 from datetime import datetime
+import os
+os.environ['DISPLAY'] = ':0.0'
 import pyautogui
 from mysql.connector import connect, Error
 
