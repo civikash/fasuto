@@ -117,10 +117,10 @@ def get_info(browser, all_information):
             for f in all_names:
                 name = f.find("span", class_="_16s5yj36").getText() # имя
 
-                review_text = f.find("a", class_="_ayej9u3")
+                review_text = f.find("a", class_="_ayej9u3").getText()
                 print(review_text)
                 if review_text is None:
-                    review_text = f.find("a", class_="_1it5ivp")
+                    review_text = f.find("a", class_="_1it5ivp").getText()
                 review = review_text.getText() # текст отзыва
 
                 rating = len(f.find("div", class_="_1fkin5c").find_all("span")) # рейтинг
