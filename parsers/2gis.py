@@ -118,6 +118,7 @@ def get_info(browser, all_information):
                 name = f.find("span", class_="_16s5yj36").getText() # имя
 
                 review_text = f.find("a", class_="_ayej9u3")
+                print(review_text)
                 if review_text is None:
                     review_text = f.find("a", class_="_1it5ivp")
                 review = review_text.getText() # текст отзыва
@@ -127,6 +128,7 @@ def get_info(browser, all_information):
                 date = f.find("div", class_="_4mwq3d").getText() # дата
 
                 all_data = [name, review]
+                print(all_data)
                 all_information.append(all_data)
                 # rating, get_date(date, date_formatted)
             return all_information
@@ -168,6 +170,7 @@ def get_info(browser, all_information):
                         all_information.append(all_data)
                         # rating, get_date(date, date_formatted)
                     return all_information
+                print(all_information)
     except:
         # pyautogui.alert(text='ЧТО-ТО ПОШЛО НЕ ТАК ПРИ ПАРСИНГЕ ЯНДЕКСА, СООБЩИТЕ АДМИНИСТРАТОРУ', title='Ошибка', button='Закрыть')
         exit()
