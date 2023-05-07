@@ -105,6 +105,7 @@ def get_date(date, date_formatted):
 
 all_information = []
 
+
 def get_info(browser, all_information):
     date_formatted = ''
 
@@ -124,12 +125,14 @@ def get_info(browser, all_information):
                 rating = ((f.find("span", class_="stars-rating-text").getText()).split(','))[0] # рейтинг
                 date = f.find("span", class_="z-text--dark-gray").getText() # дата
                 # print("data", date)
-            all_data = [name, review_text]
-            # rating, get_date(date, date_formatted)
-            all_information.append(all_data)
+                all_data = [name, review_text]
+                # rating, get_date(date, date_formatted)
+                all_information.append(all_data)
+        print("all_information", all_information)  # добавить эту строку для проверки
         return all_information
     except:
         print("жорпка")
+
     
 
 def main():
