@@ -19,7 +19,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
                 cursor.execute(select_movies_query)
                 result = cursor.fetchall()
                 for row in result:
-                    # print(row)
+                    print(row)
                     id = row[0]
                     name = row[1] + " " + (row[2])
                     href = row[3]
@@ -31,7 +31,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
                     db_all_info.append(info)
                     db_info.append(rev_info)
                     hrefs.append(href)
-                    # print(hrefs)
+                    print(hrefs)
                 return db_all_info, db_info, hrefs
 
     except Error as e:
