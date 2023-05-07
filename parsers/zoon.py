@@ -12,6 +12,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
             user="root",
             password="root",
             host="localhost",
+            port=3306,
             database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
