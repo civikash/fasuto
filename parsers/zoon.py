@@ -50,6 +50,7 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
         ) as connection:
             with connection.cursor() as cursor:
                 count = 0
+                print("ALL_INFORMATION", all_information)
                 for i in all_information:
                     print("это i", i)
                     if i in db_info:
