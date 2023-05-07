@@ -52,11 +52,11 @@ def update_data_from_database(db_all_info, db_info, all_information, count):
             with connection.cursor() as cursor:
                 count = 0
                 for i in all_information:
-                    # print("это i", i)
+                    print("это i", i)
                     if i in db_info:
-                        # print("Ура!!!")
+                        print("Ура!!!")
                         d = (db_all_info[count])
-                        # print(d)
+                        print(d)
                         count += 1
                         f = str(d[0])
                         update_query = (f"""
