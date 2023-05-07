@@ -134,6 +134,8 @@ def main():
     count = 0
 
     options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+    options.add_argument("--no-sandbox")
     options.headless = True
     
     with webdriver.Chrome(options=options) as browser:
