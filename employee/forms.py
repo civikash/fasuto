@@ -23,7 +23,7 @@ class TableEmplForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = ReviewsEmployee #Что за модель
-        fields = ['review_text'] #Какие поля (мы не должны указывать поле owner)
+        fields = ['review_text', 'note', 'office'] #Какие поля (мы не должны указывать поле owner)
     
     #здесь идет отображение значений, которые относятся к этому объекту (предзагрузка информации)
     def __init__(self, *args, **kwargs):
