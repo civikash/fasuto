@@ -11,7 +11,7 @@ def get_data_from_database(db_info, db_all_info, hrefs):
             host="localhost",
             user="root",
             password="root",
-            database="Mydatabase",
+            database="branch_db",
         ) as connection:
             with connection.cursor() as cursor:
                 select_movies_query = "SELECT id, re_firstname, re_lastname, office, review_text FROM adminc_reviewsemployee WHERE status_id = '1' AND space_id = '4'"
