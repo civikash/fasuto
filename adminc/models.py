@@ -115,10 +115,12 @@ class ReviewsEmployee(models.Model):
     CHECKING = 'На проверке'
     GOOD = 'Одобрен'
     NULL = 'Нет статуса'
+    REJECT = 'Не уникален'
 
     STATUS_CHOICES = [
         (CHECKING, _('На проверке')),
         (GOOD, _('Одобрен')),
+        (REJECT, _('Не уникален')),
         (NULL, _('Нет статуса'))
     ]
     owner = models.ForeignKey(CustomUser, on_delete=models.PROTECT)

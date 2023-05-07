@@ -23,13 +23,18 @@ nav {
   align-items: center;
 }
 
+.mt-1 {
+  margin-top: 1rem;
+}
+
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 80%;
+  width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 3rem;
   align-items: center;
 }
 
@@ -58,6 +63,11 @@ a.logout-button {
   color: #333;
   text-decoration: none;
   border-radius: 4px;
+}
+
+#type-reviews-chart {
+  width: 700px !important;
+  height: 350px !important;
 }
 
 a.logout-button:hover {
@@ -91,6 +101,12 @@ a.logout-button:hover {
 
 .gap-em-1 {
   gap: 1em;
+}
+
+.checked {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .gap-em-2 {
@@ -327,11 +343,6 @@ h1 {
     height: 350px !important;
 }
 
-#type-reviews-chart {
-  width: fit-content !important;
-  height: fit-content !important;
-  font-size: 1.3rem !important;
-}
 
 h2 {
   font-size: 1.1em;
@@ -431,6 +442,7 @@ label {
 
 .course-search .filter {
   width: 100%;
+  gap: 1rem;
   padding: 5px 1px;
 }
 
@@ -500,6 +512,10 @@ label {
   border-radius: 5px;
   background-color: #f8f8f8;
   text-align: left;
+}
+
+.mt-05 {
+  margin-top: 0.5rem;
 }
 
 .user-info p {

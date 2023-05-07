@@ -14,12 +14,16 @@
     {% csrf_token %}
     <div class="course-search flex wid-100  jst-start align-center">   
       <div class="filter wid-100  left-0 flex relative align-center">
-          <div class=" flex column">
+          <div class="flex column checked">
               <label for="search" class="search-label little-lb">Напоминание Всем</label>
+              <div class="flex gap-em-2 align-center">
               <label>Поставьте галочку, если вы хотите сделать глобальное напоминание</label>
               <input required name="global_task" class="h-25x"
-                  type="checkbox" />
+              type="checkbox" />
+              </div>
+              
           </div>
+          
       </div>
   </div>
     <div class="course-search flex wid-100  jst-start align-center">   

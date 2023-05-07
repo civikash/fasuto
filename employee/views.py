@@ -63,6 +63,7 @@ class TableReviewView(LoginRequiredMixin, ListView):
             review_id = request.POST.get('reject').split('-')[0]
             review = ReviewsEmployee.objects.get(id=review_id)
             review.check_review = ReviewsEmployee.REJECT
+            review.status = ReviewStatus.objects.get(name=ReviewStatus.NO_UNIQUE)
             review.save()
         return super().get(request, *args, **kwargs)
 
